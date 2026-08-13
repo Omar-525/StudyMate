@@ -1,10 +1,10 @@
 name: Build Android APK
 
 on:
-  workflow_dispatch: # 👈 هذه الإضافة تتيح لك تشغيل البناء يدوياً من الموقع بضغطة زر
+  workflow_dispatch:
   push:
     branches:
-      - '**' # 👈 سيعمل الآن على أي فرع ترفعه بدون مشاكل
+      - '**'
 
 jobs:
   build:
@@ -23,11 +23,14 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
 
       - name: Install Dependencies
+        run: npm install
+
+      - name: Add Android Platform if missing
         run: |
-          npm ci || npm install
+          npx cap add android || true
 
       - name: Sync Capacitor
         run: |
@@ -42,5 +45,5 @@ jobs:
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: my-app-apk
+          name: StudyMate-APK
           path: android/app/build/outputs/apk/debug/app-debug.apk
