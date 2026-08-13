@@ -1,0 +1,46 @@
+name: Build Android APK
+
+on:
+  workflow_dispatch: # 👈 هذه الإضافة تتيح لك تشغيل البناء يدوياً من الموقع بضغطة زر
+  push:
+    branches:
+      - '**' # 👈 سيعمل الآن على أي فرع ترفعه بدون مشاكل
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install Dependencies
+        run: |
+          npm ci || npm install
+
+      - name: Sync Capacitor
+        run: |
+          npx cap sync android
+
+      - name: Build APK with Gradle
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleDebug
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: my-app-apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk

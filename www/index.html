@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>مفكرتي الدراسية</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Tajawal:wght@500;700;800&family=Cairo:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+  <div id="app">
+
+    <!-- الهيدر -->
+    <header>
+      <div class="greeting" id="greetingText">أهلًا بك 👋</div>
+      <h1 class="brand" id="dateText">مفكرتي الدراسية</h1>
+    </header>
+
+    <!-- شاشة الجدول -->
+    <section class="screen active" id="screen-schedule">
+      <div class="screen-head">
+        <h2>جدول محاضراتي</h2>
+        <button class="fab-inline" id="btnAddLecture">+ إضافة</button>
+      </div>
+      <div id="lecturesList" class="list"></div>
+      <div class="empty-state" id="emptyLectures">
+        <div class="empty-icon">🗓️</div>
+        <p>لا توجد محاضرات بعد</p>
+        <span>اضغط "إضافة" لإنشاء أول محاضرة</span>
+      </div>
+    </section>
+
+    <!-- شاشة الملاحظات -->
+    <section class="screen" id="screen-notes">
+      <h2>الملاحظات</h2>
+
+      <div class="text-input-row">
+        <input type="text" id="textNoteInput" placeholder="اكتب ملاحظة...">
+        <button id="btnSendText" class="icon-btn send">➤</button>
+      </div>
+
+      <button id="btnRecord" class="record-btn">
+        <span class="dot"></span>
+        <span id="recordLabel">تسجيل ملاحظة صوتية</span>
+      </button>
+      <div class="waveform" id="waveform"></div>
+
+      <div id="notesList" class="list"></div>
+      <div class="empty-state" id="emptyNotes">
+        <div class="empty-icon">📝</div>
+        <p>لا توجد ملاحظات بعد</p>
+        <span>ابدأ بكتابة أو تسجيل ملاحظتك الأولى</span>
+      </div>
+    </section>
+
+    <!-- شاشة التصوير -->
+    <section class="screen" id="screen-camera">
+      <h2>تصوير المحاضرة</h2>
+
+      <button id="btnOpenCamera" class="camera-btn">📷 التقاط صورة</button>
+      <input type="file" id="cameraInput" accept="image/*" capture="environment" hidden>
+
+      <div id="pendingPhotoBox" class="pending-photo hidden">
+        <img id="pendingPhotoImg" src="" alt="صورة">
+        <textarea id="photoNoteInput" placeholder="اكتب ملاحظة أسفل الصورة..."></textarea>
+        <div class="pending-actions">
+          <button id="btnSavePhoto" class="save-btn">حفظ</button>
+          <button id="btnCancelPhoto" class="cancel-btn">إلغاء</button>
+        </div>
+      </div>
+
+      <div id="photosList" class="photo-grid"></div>
+      <div class="empty-state" id="emptyPhotos">
+        <div class="empty-icon">🖼️</div>
+        <p>لا توجد صور بعد</p>
+        <span>التقط صورة للمحاضرة واكتب ملاحظة أسفلها</span>
+      </div>
+    </section>
+
+    <!-- شريط التنقل السفلي -->
+    <nav class="bottom-nav">
+      <button class="nav-item active" data-screen="schedule">
+        <span class="nav-icon">🗓️</span><span>الجدول</span>
+      </button>
+      <button class="nav-item" data-screen="notes">
+        <span class="nav-icon">📝</span><span>الملاحظات</span>
+      </button>
+      <button class="nav-item" data-screen="camera">
+        <span class="nav-icon">📷</span><span>تصوير</span>
+      </button>
+    </nav>
+
+  </div>
+
+  <!-- نافذة إضافة محاضرة -->
+  <div class="modal-overlay" id="lectureModalOverlay">
+    <div class="modal">
+      <h3>إضافة محاضرة</h3>
+      <input type="text" id="inpTitle" placeholder="اسم المادة">
+      <select id="inpDay">
+        <option value="السبت">السبت</option>
+        <option value="الأحد">الأحد</option>
+        <option value="الاثنين">الاثنين</option>
+        <option value="الثلاثاء">الثلاثاء</option>
+        <option value="الأربعاء">الأربعاء</option>
+        <option value="الخميس">الخميس</option>
+        <option value="الجمعة">الجمعة</option>
+      </select>
+      <input type="time" id="inpTime">
+      <input type="text" id="inpLocation" placeholder="القاعة / المكان">
+      <div class="color-picker" id="colorPicker">
+        <span class="color-dot c0 selected" data-c="0"></span>
+        <span class="color-dot c1" data-c="1"></span>
+        <span class="color-dot c2" data-c="2"></span>
+        <span class="color-dot c3" data-c="3"></span>
+      </div>
+      <div class="modal-actions">
+        <button id="btnSaveLecture" class="save-btn">حفظ</button>
+        <button id="btnCancelLecture" class="cancel-btn">إلغاء</button>
+      </div>
+    </div>
+  </div>
+
+  <audio id="audioPlayer" hidden></audio>
+
+  <script src="js/app.js"></script>
+</body>
+
+</html>
